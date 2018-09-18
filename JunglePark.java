@@ -25,14 +25,12 @@ public class JunglePark {
 
     processing = processingObj;
     // Set the color used for the background of the Processing window
-    processing.background(245, 255, 250); // Mint cream color
-    backgroundImage = processing.loadImage("images/background.png");
-    processing.image(backgroundImage, processing.width / 2, processing.height / 2);
+    
 
     tigers = new Tiger[8];
 
     randGen = new Random();
-    for(int i=0; i<tigers.length; i++) {
+    for(int i=0; i<tigers.length-3; i++) {
       tigers[i] = new Tiger(processing, (float)randGen.nextInt(processing.width), 
           (float)randGen.nextInt(processing.height));
       tigers[i].draw();
@@ -41,10 +39,15 @@ public class JunglePark {
   }
 
   public static void update() {
-    System.out.println(mouseOver(tigers[0]));
-//    tigers[0].setPositionX(processing.mouseX);
-//    tigers[0].setPositionY(processing.mouseY);
-    tigers[0].draw();
+    processing.background(245, 255, 250); // Mint cream color
+    backgroundImage = processing.loadImage("images/background.png");
+    processing.image(backgroundImage, processing.width / 2, processing.height / 2);
+    for(int i=0; i<tigers.length; i++) {
+      if(tigers[i] != null) {
+//        System.out.println(mouseOver(tigers[i]));
+        tigers[i].draw();
+      }
+    }
   }
 
   public static boolean mouseOver(Tiger tiger) {
@@ -58,41 +61,45 @@ public class JunglePark {
       return false;
     }
   }
-  
+
   public static void mouseDown() {
     for(int i=0; i<tigers.length; i++) {
-      if(mouseOver(tigers[i]) && tigers[i].isDragging() == false) {
-        tigers[i].setDragging(true);
-        return;
+      if(tigers[i] != null) {
+        if(mouseOver(tigers[i]) && tigers[i].isDragging() == false) {
+          tigers[i].setDragging(true);
+          return;
+        }
       }
     }
   }
-  
+
   public static void mouseUp() {
     for(int i=0; i<tigers.length; i++) {
-      tigers[i].setDragging(false);
+      if(tigers[i] != null) {
+        tigers[i].setDragging(false);
+      }
     }
   }
-  
-  public static void keyPressed( ) {
-    if(processing.key == 'T') {
+
+  public static void keyPressed() {
+    if(processing.key == 't') {
+      System.out.println("t");
       for(int i=0; i<tigers.length; i++) {
         if(tigers[i] == null) {
           tigers[i] = new Tiger(processing, processing.mouseX, processing.mouseY);
           return;
         }
       }
-    } else if(processing.key == 'R') {
+    } else if(processing.key == 'r') {
       for(int i=0; i<tigers.length; i++) {
-        if(tigers[i] == null) {
-          return;
-        } else if(mouseOver(tigers[i])) {
+        System.out.println(i);
+        if(tigers[i] != null && mouseOver(tigers[i])) {
           tigers[i] = null;
         }
       }
     }
   }
-  
-  
-  
+
+
+
 }
